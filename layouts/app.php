@@ -82,6 +82,7 @@ $locale  = \Core\Auth::locale();
     </footer>
   </div>
 </div>
+<script src="<?= e(asset('assets/js/charts.js')) ?>"></script>
 <script src="<?= e(asset('assets/js/app.js')) ?>"></script>
 </body>
 </html>

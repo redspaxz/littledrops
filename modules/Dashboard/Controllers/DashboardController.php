@@ -13,16 +13,18 @@ final class DashboardController extends Controller
     {
         $this->requireAuth();
         $this->view('Dashboard::index', [
-            'title'     => t('dash.title'),
-            'status'    => Stats::unitStatusCounts(),
-            'occupancy' => Stats::occupancyRate(),
-            'rentRoll'  => Stats::monthlyRentRoll(),
-            'collected' => Stats::collectedThisMonth(),
-            'arrears'   => Stats::outstandingArrears(),
-            'tickets'   => Stats::openTickets(),
-            'recovery'  => Stats::recoveryCases(),
-            'payments'  => Stats::recentPayments(),
-            'channels'  => Stats::paymentChannelsThisMonth(),
+            'title'      => t('dash.title'),
+            'status'     => Stats::unitStatusCounts(),
+            'occupancy'  => Stats::occupancyRate(),
+            'rentRoll'   => Stats::monthlyRentRoll(),
+            'collected'  => Stats::collectedThisMonth(),
+            'arrears'    => Stats::outstandingArrears(),
+            'tickets'    => Stats::openTickets(),
+            'recovery'   => Stats::recoveryCases(),
+            'payments'   => Stats::recentPayments(),
+            'channels'   => Stats::paymentChannelsThisMonth(),
+            'collections' => Stats::monthlyCollections(6),
+            'aging'      => Stats::arrearsAging(),
         ]);
     }
 }

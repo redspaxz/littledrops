@@ -95,4 +95,53 @@ final class Stats
               GROUP BY channel ORDER BY total DESC"
         );
     }
+
+    /** Billed vs collected per month for the last N months (inclusive of current). */
+    public static function monthlyCollections(int $months = 6): array
+    {
+        $start = date('Y-m-01', strtotime('first day of ' . -($months - 1) . ' months'));
+
+        $billed = Database::rows(
+            "SELECT DATE_FORMAT(issue_date, '%Y-%m') AS m, SUM(amount_xaf) AS total
+               FROM invoices
+              WHERE status <> 'cancelled' AND issue_date >= ?
+              GROUP BY m",
+            [$start]
+        );
+        $collected = Database::rows(
+            "SELECT DATE_FORMAT(paid_at, '%Y-%m') AS m, SUM(amount_xaf) AS total
+               FROM payments
+              WHERE status = 'confirmed' AND paid_at >= ?
+              GROUP BY m",
+            [$start]
+        );
+
+        $mapB = array_column($billed, 'total', 'm');
+        $mapC = array_column($collected, 'total', 'm');
+
+        $series = [];
+        for ($i = $months - 1; $i >= 0; $i--) {
+            $key = date('Y-m', strtotime('first day of ' . -$i . ' months'));
+            $series[] = [
+                'label'     => date('M', strtotime($key . '-01')),
+                'billed'    => (int) ($mapB[$key] ?? 0),
+                'collected' => (int) ($mapC[$key] ?? 0),
+            ];
+        }
+        return $series;
+    }
+
+    /** Outstanding balances bucketed by how long overdue (0 = not yet due). */
+    public static function arrearsAging(): array
+    {
+        $row = Database::row(
+            "SELECT
+               COALESCE(SUM(CASE WHEN due_date >= CURDATE() THEN amount_xaf - paid_xaf ELSE 0 END), 0) AS current,
+               COALESCE(SUM(CASE WHEN due_date < CURDATE() AND due_date >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) THEN amount_xaf - paid_xaf ELSE 0 END), 0) AS d1_30,
+               COALESCE(SUM(CASE WHEN due_date < DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND due_date >= DATE_SUB(CURDATE(), INTERVAL 60 DAY) THEN amount_xaf - paid_xaf ELSE 0 END), 0) AS d31_60,
+               COALESCE(SUM(CASE WHEN due_date < DATE_SUB(CURDATE(), INTERVAL 60 DAY) THEN amount_xaf - paid_xaf ELSE 0 END), 0) AS d60_plus
+             FROM invoices WHERE status IN ('unpaid','partial')"
+        );
+        return array_map('intval', $row ?? ['current' => 0, 'd1_30' => 0, 'd31_60' => 0, 'd60_plus' => 0]);
+    }
 }
