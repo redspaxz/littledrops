@@ -1,0 +1,10 @@
+# Local configuration (DB credentials)
+config/config.ini
+
+# Environment / logs
+*.log
+.env
+
+# OS junk
+Thumbs.db
+.DS_Store

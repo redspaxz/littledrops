@@ -1,0 +1,14 @@
+; PBMS local configuration — copy to config/config.ini and adjust.
+; Anything here overrides the defaults in core/Config.php.
+
+[db]
+host     = 127.0.0.1
+port     = 3306
+database = pbms
+username = root
+password =
+
+[legal]
+default_notice_days  = 30
+late_fee_penalty_pct = 5.00
+late_fee_grace_days  = 7
