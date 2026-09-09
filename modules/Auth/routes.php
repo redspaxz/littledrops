@@ -12,4 +12,5 @@ return static function (Router $r): void {
     $r->post('login', [AuthController::class, 'login']);
     $r->post('logout', [AuthController::class, 'logout']);
     $r->post('locale', [AuthController::class, 'locale']);
+    $r->get('health', [AuthController::class, 'health']);
 };

@@ -1,0 +1,2 @@
+# config.ini holds DB credentials — never served over HTTP.
+Require all denied

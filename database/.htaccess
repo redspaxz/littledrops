@@ -1,0 +1,2 @@
+# Block web access to SQL files — import via CLI/phpMyAdmin only.
+Require all denied

@@ -41,4 +41,25 @@ final class AuthController extends Controller
         \Core\Auth::setLocale(Request::str('locale', 'en'));
         Response::redirect(Request::str('back', 'dashboard'));
     }
+
+    /**
+     * Public health probe (no auth, no secrets): confirms the app runs and
+     * whether MySQL answers. Use it right after deploying to a new host.
+     */
+    public function health(): void
+    {
+        $db = ['ok' => false, 'error' => 'connection_failed'];
+        try {
+            $version = \Core\Database::scalar('SELECT VERSION()');
+            $db = ['ok' => true, 'server' => (string) $version];
+        } catch (\PDOException $e) {
+            $db['error'] = str_contains($e->getMessage(), 'Access denied') ? 'access_denied' : 'connection_failed';
+        }
+        Response::json([
+            'ok'  => $db['ok'],
+            'app' => \Core\Config::get('app.name'),
+            'php' => PHP_VERSION,
+            'db'  => $db,
+        ]);
+    }
 }

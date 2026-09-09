@@ -54,7 +54,10 @@ final class Router
         $method = Request::method();
         $route  = trim($route, '/');
 
-        foreach ($this->routes[$method] ?? [] as [$pattern, $handler]) {
+        // HEAD is served as GET (monitors and prefetchers send HEAD).
+        $table = $this->routes[$method] ?? $this->routes['GET'] ?? [];
+
+        foreach ($table as [$pattern, $handler]) {
             $regex = '#^' . preg_replace('#\{(\w+)\}#', '(?P<$1>[^/]+)', $pattern) . '$#';
             if (preg_match($regex, $route, $m)) {
                 $params = array_filter($m, 'is_string', ARRAY_FILTER_USE_KEY);

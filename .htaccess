@@ -1,0 +1,3 @@
+# Production hardening (Apache/XAMPP): no directory listings.
+# App URLs use index.php?r=... so no rewrite rules are required.
+Options -Indexes

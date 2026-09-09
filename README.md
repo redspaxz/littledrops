@@ -75,6 +75,31 @@ agreements).
 5. Top bar 🇫🇷/🇬🇧 toggles the whole UI to French and back.
 6. Sign in as `tech@littledrops.cm` to see RBAC (no billing access).
 
+## Deploying to shared hosting (cPanel / any LAMP host)
+
+1. Upload the project files to `public_html/littledrops/` (or pull the repo).
+2. In cPanel → **MySQL Databases**: create a database (e.g. `ttechcg_pbms`)
+   and a user, then grant the user ALL privileges on that database.
+3. Import `database/schema.mysql.sql` then `database/seed.mysql.sql` via
+   cPanel → **phpMyAdmin** (Import tab). Skip the seed for a clean start.
+4. Create `config/config.ini` (copy from `config/config.ini.example`) with the
+   host credentials. On Linux hosts use `host = localhost` (socket) rather
+   than `127.0.0.1` if TCP is refused:
+
+   ```ini
+   [db]
+   host     = localhost
+   database = ttechcg_pbms
+   username = ttechcg_pbms_user
+   password = <the password you set>
+   ```
+
+5. Visit `https://yourdomain.com/littledrops/index.php?r=health` — it should
+   report `"db":{"ok":true}`. Then sign in and **change the demo passwords**.
+6. HTTPS is strongly recommended (the session cookie auto-sets `secure` when
+   the request is HTTPS). The bundled `.htaccess` files block web access to
+   `database/`, `config/` and `docs/` and disable directory listings.
+
 ## Security notes (dev-grade, harden before production)
 
 - HTTPS only in production (session cookie flags already honour it).
