@@ -4,7 +4,7 @@
 use Modules\Dashboard\Models\Stats;
 
 $statusColors = [
-    'leased'            => '#0e6e5c',
+    'leased'            => '#0d9488',
     'vacant'            => '#1d4f91',
     'under_maintenance' => '#b97f14',
     'reserved'          => '#5c6b77',
@@ -22,7 +22,7 @@ $channelColors = [
     'orange_money'  => '#ff7900',
     'bank_transfer' => '#1d4f91',
     'card'          => '#5c6b77',
-    'cash'          => '#0e6e5c',
+    'cash'          => '#0d9488',
     'cheque'        => '#8a9aa6',
 ];
 $channelData = [];
@@ -35,7 +35,7 @@ foreach ($channels as $c) {
     ];
 }
 
-$agingColors = ['#0e6e5c', '#1d4f91', '#b97f14', '#b3261e'];
+$agingColors = ['#0d9488', '#1d4f91', '#b97f14', '#b3261e'];
 $agingLabels = ['dash.aging_current', 'dash.aging_1_30', 'dash.aging_31_60', 'dash.aging_60_plus'];
 $agingKeys   = ['current', 'd1_30', 'd31_60', 'd60_plus'];
 $agingData   = [];
@@ -52,7 +52,7 @@ $lineCfg = [
     'labels' => array_column($collections, 'label'),
     'series' => [
         ['name' => t('dash.series_billed'),    'color' => '#8a9aa6', 'dashed' => true, 'values' => array_column($collections, 'billed')],
-        ['name' => t('dash.series_collected'), 'color' => '#0e6e5c', 'area' => true,  'values' => array_column($collections, 'collected')],
+        ['name' => t('dash.series_collected'), 'color' => '#0d9488', 'area' => true,  'values' => array_column($collections, 'collected')],
     ],
 ];
 $donutCfg = [

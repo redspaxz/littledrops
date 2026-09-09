@@ -176,7 +176,7 @@
       var fill = document.createElement('div');
       fill.className = 'chart-bar-fill';
       fill.style.width = (d.value / max * 100) + '%';
-      fill.style.background = d.color || '#0e6e5c';
+      fill.style.background = d.color || '#0d9488';
       fill.title = d.title || (d.label + ': ' + fmtFull(d.value));
       track.appendChild(fill);
       var value = document.createElement('span');
