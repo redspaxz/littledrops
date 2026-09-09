@@ -77,8 +77,7 @@ $locale  = \Core\Auth::locale();
     <main class="content"><?= $content ?></main>
 
     <footer class="footer">
-      <?= e(t('app.name')) ?> — HTML5 · PHP · vanilla JS · MySQL (XAMPP) ·
-      Common Law edition for the North-West Region, Cameroon.
+      <?= e(t('app.name')) ?> - Common Law edition for the North-West Region, Cameroon.
     </footer>
   </div>
 </div>
